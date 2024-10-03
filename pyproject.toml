@@ -1,0 +1,72 @@
+[tool.poetry]
+name = "Cust_ForeignKey_Products"
+version = "0.1.0"
+description = "Cust_ForeignKey_Products"
+authors = ["DPavlen"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11.7"
+django = "5.0.2"
+django-cors-headers = "^4.3.1"
+django-filter = "23.4"
+djangorestframework = "3.14.0"
+djangorestframework-simplejwt = "5.3.1"
+djoser = "2.2.0"
+drf-spectacular = { version = "0.26.5", extras = ["sidecar"] }
+gunicorn = "21.2.0"
+mypy = "1.8.0"
+Pillow = "10.2.0"
+pre-commit = "3.6.2"
+psycopg2-binary = "2.9.9"
+python-dotenv = "1.0.0"
+pytest-django = "==4.8.0"
+ruff = "0.2.2"
+pytest = "^8.1.1"
+pytest-cov = "^5.0.0"
+factory-boy = "^3.3.0"
+pytest-asyncio = "^0.23.6"
+django-querycount = "^0.8.3"
+setuptools = "^70.1.1"
+django-extensions = "^3.2.3"
+black = "^24.4.2"
+celery = "^5.4.0"
+redis = "^5.0.7"
+dynaconf = "^3.2.6"
+django-model-utils = "^4.5.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+#package-mode = false
+
+[tool.ruff]
+line-length = 88
+# Исключения длинных строк
+extend-exclude = [
+    "Ecosystem_Alpha_Django/Ecosystem_Alpha_Django/*.py",
+    "**/models.py",
+    "**/settings.py",
+    "**/migrations/",
+    "**/management/",
+    "**/backend/api/v1/urls.py/",
+    ]
+force-exclude = true
+# Линтер ruff
+[tool.ruff.lint]
+preview = true
+select = [
+    "E", # pycodestyle error
+    "W", # pycodestyle warning
+    "F", # pyflakes
+    "I", # isort
+    "N", # pep8-naming
+] # all rules here https://docs.astral.sh/ruff/rules/#pep8-naming-n
+fixable = ["F401", "E501", "D400"]
+ignore = ["E203", "I001", "N999", "D400", "E501"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = -1
+
+[pytest.ini_options]
+pythonpath = ["."]
