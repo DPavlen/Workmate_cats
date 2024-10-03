@@ -19,9 +19,6 @@ class Group(TimeStampedModel):
         unique=True,
     )
 
-    def __str__(self):
-        return self.name
-
     class Meta:
         verbose_name = "Группа кота"
         verbose_name_plural = "Группы котов"
@@ -90,10 +87,15 @@ class Cat(TimeStampedModel):
         unique=True,
         # validators=[ColorValidator],
     )
-    age = models.PositiveIntegerField(
+    age = models.DecimalField(
         "Возраст кота",
+        max_digits=4,
+        decimal_places=2,
         null=True,
         blank=True,
+        help_text="Возраст указывается в годах. "
+                  "Например, 1.75 = 1 год и 9 месяцев, "
+                  "0.42 примерно 5 месяцев."
     )
     sex = models.CharField(
         max_length=10,

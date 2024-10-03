@@ -6,15 +6,24 @@ from .models import Group, Breed, Cat
 class BaseAdminSettings(admin.ModelAdmin):
     """Базовые настройки для всех моделей."""
     list_display = ("id", "name", "created")
-    list_display_links = ("id", "name", "created")
+    list_display_links = ("id", "name")
     search_fields = ("id", "name", "created")
     empty_value_display = "-пусто-"
+
+
+class GroupBreedInline(admin.TabularInline):
+    """
+    Связь между группой и породой кота в административной панели.
+    """
+    model = Breed
+    min_num = 0
+    extra = 0
 
 
 @admin.register(Group)
 class GroupAdmin(BaseAdminSettings):
     """Административный интерфейс для управления группами котов."""
-    pass
+    inlines = [GroupBreedInline]
 
 
 @admin.register(Breed)

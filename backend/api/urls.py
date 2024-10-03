@@ -1,6 +1,8 @@
 from django.urls import include, path
 from rest_framework import routers
 
+from cats.views import BreedViewSet, CatViewSet
+
 from users.views import (
     CustomTokenCreateView,
     CustomTokenRefreshView,
@@ -9,6 +11,8 @@ from users.views import (
 )
 
 router = routers.DefaultRouter()
+router.register(r"breeds", BreedViewSet, basename="breed")
+router.register(r"cats", CatViewSet, basename="cat")
 
 urlpatterns = [
     path("", include(router.urls)),
