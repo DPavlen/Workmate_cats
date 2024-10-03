@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     # "api.apps.ApiConfig",
     "cats.apps.CatsConfig",
     "users.apps.UsersConfig",
+    "colorfield"
 ]
 
 MIDDLEWARE = [
