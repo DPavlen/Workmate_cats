@@ -84,7 +84,6 @@ class Cat(TimeStampedModel):
         max_length=7,
         format="hex",
         default="#808080",
-        unique=True,
         # validators=[ColorValidator],
     )
     age = models.DecimalField(
@@ -108,6 +107,13 @@ class Cat(TimeStampedModel):
         blank=True,
         null=True,
         verbose_name="Текст описания кота"
+    )
+    icon = models.ImageField(
+        "Фото Кота",
+        upload_to="cats",
+        default=None,
+        blank=True,
+        null=True,
     )
 
     class Meta:

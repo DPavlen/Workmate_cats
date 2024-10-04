@@ -38,8 +38,8 @@ class BreedAdmin(admin.ModelAdmin):
 class CatAdmin(BaseAdminSettings):
     """Административный интерфейс для управления породами котов."""
     list_display = BaseAdminSettings.list_display + (
-        "breed", "color", "age", "sex")
+        "breed", "color", "age", "sex", "icon")
     list_display_links = BaseAdminSettings.list_display_links + (
-        "breed", "color", "age", "sex")
+        "breed", "color", "age", "sex", "icon")
     search_fields = BaseAdminSettings.search_fields + (
-        "breed", "color", "age", "sex")
+        "breed", "color", "age", "sex", "icon")
