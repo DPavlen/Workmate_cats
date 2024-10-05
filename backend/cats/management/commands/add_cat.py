@@ -1,7 +1,7 @@
 import json
-import random
 from django.core.management.base import BaseCommand
 from cats.models import Group, Breed, Cat
+from users.models import CustUser
 
 
 class Command(BaseCommand):
@@ -16,9 +16,18 @@ class Command(BaseCommand):
                     age = cat.get("age")
                     sex = cat.get("sex")
                     description = cat.get("description")
+                    owner_username = cat.get("owner")
 
                     # Получаем связанный объект Breed по id и связке с name
                     breed = Breed.objects.get(name=breed_name)
+
+                    # Получаем владельца по username, если он указан в файле
+                    owner = None
+                    if owner_username:
+                        owner = CustUser.objects.get(username=owner_username)
+                    else:
+                        # Можно указать владельца по умолчанию, если он не указан в данных
+                        owner = CustUser.objects.get(username="default_owner")
 
                     Cat.objects.get_or_create(
                         name=name,
@@ -26,8 +35,16 @@ class Command(BaseCommand):
                         color=color,
                         age=age,
                         sex=sex,
-                        description=description
+                        description=description,
+                        owner=owner
                     )
+
+        except Breed.DoesNotExist:
+            self.stdout.write(self.style.ERROR(
+                "Ошибка: Указанная порода не найдена в базе данных."))
+        except CustUser.DoesNotExist:
+            self.stdout.write(self.style.ERROR(
+                "Ошибка: Указанный владелец не найден в базе данных."))
         except Exception:
             raise ("Ошибка при загрузке Котов':")
         return (

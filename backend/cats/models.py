@@ -1,8 +1,12 @@
 import uuid
 
 from colorfield.fields import ColorField
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from model_utils.models import TimeStampedModel
+
+from core.validators import validate_color
+from users.models import CustUser
 
 
 class Group(TimeStampedModel):
@@ -79,12 +83,18 @@ class Cat(TimeStampedModel):
         on_delete=models.CASCADE,
         related_name="cats",
     )
+    owner = models.ForeignKey(
+        CustUser,
+        on_delete=models.CASCADE,
+        related_name="cats",
+        verbose_name="Владелец кота",
+    )
     color = ColorField(
         verbose_name="Цвет в формате HEX",
         max_length=7,
         format="hex",
         default="#808080",
-        # validators=[ColorValidator],
+        validators=[validate_color],
     )
     age = models.DecimalField(
         "Возраст кота",
@@ -94,7 +104,21 @@ class Cat(TimeStampedModel):
         blank=True,
         help_text="Возраст указывается в годах. "
                   "Например, 1.75 = 1 год и 9 месяцев, "
-                  "0.42 примерно 5 месяцев."
+                  "0.42 примерно 5 месяцев.",
+        validators=[
+            MinValueValidator(
+                0.1,
+                message="Минимальный возраст кота "
+                        "должна быть не меньше "
+                        f"{0.1} ",
+            ),
+            MaxValueValidator(
+                50,
+                message="Возраст питомца, к сожалению, "
+                        "не может быть больше"
+                        f" {50}."
+            ),
+        ],
     )
     sex = models.CharField(
         max_length=10,
@@ -108,13 +132,6 @@ class Cat(TimeStampedModel):
         null=True,
         verbose_name="Текст описания кота"
     )
-    icon = models.ImageField(
-        "Фото Кота",
-        upload_to="cats",
-        default=None,
-        blank=True,
-        null=True,
-    )
 
     class Meta:
         verbose_name = "Кот"
@@ -124,3 +141,56 @@ class Cat(TimeStampedModel):
     def __str__(self):
         return self.name
 
+
+class CatPhoto(models.Model):
+    """Модель фото кота."""
+
+    id = models.UUIDField(
+        "id",
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
+    cat = models.ForeignKey(
+        Cat,
+        on_delete=models.CASCADE,
+        related_name="photos",
+        verbose_name="Кот"
+    )
+    photo = models.ImageField("Фото кота")
+
+    class Meta:
+        verbose_name = "Фотография"
+        verbose_name_plural = "Фотографии"
+        ordering = ("cat__name",)
+
+    def __str__(self):
+        return self.cat.name
+
+
+class CatRating(models.Model):
+    cat = models.ForeignKey(
+        Cat,
+        on_delete=models.CASCADE,
+        related_name="ratings",
+        verbose_name="Кот"
+    )
+    user = models.ForeignKey(
+        CustUser,
+        on_delete=models.CASCADE,
+        verbose_name="Автор оценки"
+    )
+    rating = models.PositiveIntegerField(
+        validators=[
+            MinValueValidator(1), MaxValueValidator(5)
+        ]
+    )
+
+    class Meta:
+        verbose_name = "Оценка кота"
+        verbose_name_plural = "Оценки котов"
+        unique_together = ("cat", "user")
+
+    def __str__(self):
+        return (f"Оценка {self.rating} для "
+                f"{self.cat.name} от {self.user.username}")

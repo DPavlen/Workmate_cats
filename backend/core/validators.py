@@ -27,3 +27,18 @@ def validate_mobile(value):
     rule = re.compile(r"^\+?[7-8]?[0-9]{10}$")
     if not rule.search(value):
         raise ValidationError("Неверный мобильный номер.")
+
+
+def validate_color(value):
+    """
+    Валидация поля color-Цвет Тега в формате HEX и его соответсвие.
+    """
+    regex = re.compile(r"^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$")
+    max_length = 7
+    message = (
+        f"Введенное значение не является цветом в формате HEX! "
+        f"Длина не более {max_length} символов"
+    )
+
+    if not regex.match(value):
+        raise ValueError(message)
