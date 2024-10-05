@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
-    "rest_framework.authtoken",
     "rest_framework_simplejwt.token_blacklist",
     "djoser",
 
@@ -51,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # "querycount.middleware.QueryCountMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -151,9 +151,9 @@ REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 
     "DATE_INPUT_FORMATS": ["%d.%m.%Y"],
-    "DEFAULT_PAGINATION_CLASS":
-        "rest_framework.pagination.LimitOffsetPagination",
-    "PAGE_SIZE": int(os.getenv("PAGE_SIZE", 10)),
+    # "DEFAULT_PAGINATION_CLASS":
+    #     "rest_framework.pagination.LimitOffsetPagination",
+    # "PAGE_SIZE": int(os.getenv("PAGE_SIZE", 10)),
 }
 
 # --------------------------------------------

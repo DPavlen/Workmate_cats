@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import Group, Breed, Cat, CatPhoto, CatRating
 
@@ -39,9 +40,10 @@ class CatPhotoAdmin(admin.ModelAdmin):
     """Административный интерфейс для управления фото котов."""
     list_display = (
         "id",
-        "cat"
+        "cat",
+        "photo",
     )
-    search_fields = ("cat",)
+    search_fields = ("cat", "photo")
 
 
 class CatPhotoInline(admin.TabularInline):

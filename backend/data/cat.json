@@ -15,7 +15,7 @@
         "age": 3.5,
         "sex": "Queen",
         "description": "Спокойная и умная кошка.",
-        "owner": "pavlen"
+        "owner": "anna"
     },
     {
         "name": "Томас",
@@ -24,7 +24,7 @@
         "age": 1.5,
         "sex": "Tomcat",
         "description": "Активный и любознательный кот.",
-        "owner": "pavlen"
+        "owner": "marina"
     },
     {
         "name": "Инджи",
@@ -33,7 +33,7 @@
         "age": 4.0,
         "sex": "Queen",
         "description": "Красивая и грациозная кошка.",
-        "owner": "pavlen"
+        "owner": "nikita"
     },
     {
         "name": "Рагнар",
@@ -51,7 +51,7 @@
         "age": 2.5,
         "sex": "Queen",
         "description": "Смелая и милая кошка.",
-        "owner": "pavlen"
+        "owner": "anna"
     },
     {
         "name": "Симба",
@@ -60,7 +60,7 @@
         "age": 1.0,
         "sex": "Tomcat",
         "description": "Гиперактивный кот.",
-        "owner": "pavlen"
+        "owner": "marina"
     },
     {
         "name": "Злата",
@@ -69,7 +69,7 @@
         "age": 2.2,
         "sex": "Queen",
         "description": "Нетерпеливая и суетливая кошка.",
-        "owner": "pavlen"
+        "owner": "nikita"
     },
     {
         "name": "Басик",
@@ -87,7 +87,7 @@
         "age": 2.0,
         "sex": "Queen",
         "description": "Изобретательная и любопытная кошка.",
-        "owner": "pavlen"
+        "owner": "anna"
     },
     {
         "name": "Чарли",
@@ -96,7 +96,7 @@
         "age": 0.42,
         "sex": "Tomcat",
         "description": "Любит играть и баловаться.",
-        "owner": "pavlen"
+        "owner": "marina"
     },
     {
         "name": "Сися",
@@ -105,7 +105,7 @@
         "age": 4.5,
         "sex": "Queen",
         "description": "Очень ленивая и милая кошка.",
-        "owner": "pavlen"
+        "owner": "nikita"
     },
     {
         "name": "Миша",
@@ -123,7 +123,7 @@
         "age": 3.5,
         "sex": "Queen",
         "description": "Озорная и умная кошка.",
-        "owner": "pavlen"
+        "owner": "anna"
     },
     {
         "name": "Тайсон",
@@ -132,7 +132,7 @@
         "age": 1.2,
         "sex": "Tomcat",
         "description": "Смешной и игривый кот.",
-        "owner": "pavlen"
+        "owner": "marina"
     },
     {
         "name": "Кася",
@@ -141,6 +141,6 @@
         "age": 2.8,
         "sex": "Queen",
         "description": "Обожает своих людей.",
-        "owner": "pavlen"
+        "owner": "nikita"
     }
 ]

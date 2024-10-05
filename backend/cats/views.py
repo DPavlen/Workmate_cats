@@ -1,5 +1,6 @@
 from http import HTTPStatus
 
+from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema_view
 from rest_framework.decorators import action
@@ -7,22 +8,29 @@ from rest_framework import mixins, viewsets, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
-from rest_framework.status import HTTP_204_NO_CONTENT
 
-from core import permissions
+from .filters import FilterBreed
 from core.permissions import IsOwnerOrReadOnlyOrAdmin
-from .models import Breed, Cat
-from .schemas import CUSTOM_BREEDS_SCHEMA
+from .models import Breed, Cat, CatPhoto
+from .schemas import CUSTOM_BREEDS_SCHEMA, CUSTOM_CAT_SCHEMA
 from .serializers import BreedSerializer, CatSerializer, CatPhotoSerializer, CatUpdateSerializer
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 @extend_schema_view(**CUSTOM_BREEDS_SCHEMA)
 class BreedViewSet(viewsets.ReadOnlyModelViewSet):
     """Кастомный ViewSet пород котов."""
-    queryset = Breed.objects.all()
+    queryset = Breed.objects.select_related("group").all()
     serializer_class = BreedSerializer
+    permission_classes = (AllowAny,)
+    filter_backends = (DjangoFilterBackend,)
+    filterset_class = FilterBreed
+    filterset_fields = ("name",)
 
 
+@extend_schema_view(**CUSTOM_CAT_SCHEMA)
 class CatViewSet(mixins.CreateModelMixin,
                  mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
@@ -31,7 +39,8 @@ class CatViewSet(mixins.CreateModelMixin,
                  viewsets.GenericViewSet):
     """Кастомный основной ViewSet котов."""
 
-    queryset = Cat.objects.prefetch_related("photos")
+    queryset = Cat.objects.select_related(
+        "breed", "owner").prefetch_related("photos")
     lookup_field = "pk"
 
     def get_serializer_class(self):
@@ -103,6 +112,7 @@ class CatViewSet(mixins.CreateModelMixin,
     def photo(self, request, pk):
         """
         Метод принимает фото кота формата form-data.
+        Добавляется фото к сущности кота/кошка.
         """
 
         cat = get_object_or_404(Cat, pk=pk)

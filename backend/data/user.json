@@ -1,0 +1,38 @@
+[
+    {
+        "email": "pavlen@yandex.ru",
+        "username": "pavlen",
+        "role": "admin",
+        "sex": "М",
+        "password": "1",
+        "first_name": "Дмитрий",
+        "last_name": "Павлен"
+    },
+    {
+        "email": "anna@yandex.ru",
+        "username": "anna",
+        "role": "user",
+        "sex": "Ж",
+        "password": "12345",
+        "first_name": "Анна",
+        "last_name": "Петровна"
+    },
+    {
+        "email": "marina@gmail.com",
+        "username": "marina",
+        "role": "user",
+        "sex": "Ж",
+        "password": "12345",
+        "first_name": "Марина",
+        "last_name": "Владиславовна"
+    },
+    {
+        "email": "nikita@gmail.com",
+        "username": "nikita",
+        "role": "user",
+        "sex": "Ж",
+        "password": "12345",
+        "first_name": "Никита",
+        "last_name": "Николаевич"
+    }
+]
