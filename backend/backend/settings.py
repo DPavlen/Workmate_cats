@@ -198,6 +198,7 @@ SPECTACULAR_SETTINGS = {
         "url": "https://github.com/DPavlen/Workmate_cats",
         "email": "jobpavlenko@yandex.ru",
     },
+    "COMPONENT_SPLIT_REQUEST": True,
     "SERVE_INCLUDE_SCHEMA": False,
     "SCHEMA_COERCE_PATH_PK_SUFFIX": True,
     "SORT_OPERATIONS": True,

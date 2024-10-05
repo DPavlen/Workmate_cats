@@ -82,12 +82,16 @@ class Cat(TimeStampedModel):
         verbose_name="Порода кота",
         on_delete=models.CASCADE,
         related_name="cats",
+        null=True,
+        blank=True
     )
     owner = models.ForeignKey(
         CustUser,
         on_delete=models.CASCADE,
         related_name="cats",
         verbose_name="Владелец кота",
+        null=True,
+        blank=True,
     )
     color = ColorField(
         verbose_name="Цвет в формате HEX",
