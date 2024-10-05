@@ -157,7 +157,7 @@ class CustomTokenRefreshView(TokenRefreshView):
 @JWT_TOKEN_VERIFY_SCHEMA
 class CustomTokenVerifyView(TokenVerifyView):
     """
-    Viewset для проверки(верификации) JWT-токена c помощью access_tokenНап.
+    Viewset для проверки(верификации) JWT-токена c помощью access_token.
     """
 
     def post(self, request, *args, **kwargs):
