@@ -23,15 +23,39 @@ from cats.models import (
 )
 
 
-@pytest.fixture
-def category():
-    """
-    Фикстура для создания тестовой категории с названием "Test_Group".
-    Возвращает:Group: Созданный объект Group.
-    Дальше используем ее ниже как предзаготовку параметра group модели Breed.
-    """
-    return Group.objects.create(
-        name="Test_Group",
-        slug="test_category_fruits",
-        icon=None
-    )
+@pytest.mark.django_db
+class TestBreedModel:
+    """Тесты для модели Breed."""
+
+    @pytest.fixture
+    def group(self):
+        """
+        Фикстура для создания тестовой группы с названием "Test_Длинношёрстные".
+        Возвращает: Group: Созданный объект Group.
+        """
+        return Group.objects.create(
+            name="Test_Длинношёрстные",
+        )
+
+    @pytest.fixture
+    def breed(self, group):
+        """
+        Фикстура для создания тестовой породы, связанной с группой.
+        Возвращает: Breed: Созданный объект Breed.
+        """
+        return Breed.objects.create(
+            name="Test_Гималайская кошка",
+            group=group,
+        )
+
+    def test_str_representation(self, breed):
+        """
+        Проверка строкового представления модели Breed.
+        """
+        assert str(breed) == "Test_Гималайская кошка"
+
+    def test_group_relationship(self, breed, group):
+        """
+        Проверка, что порода связана с группой.
+        """
+        assert breed.group == group
