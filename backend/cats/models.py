@@ -173,6 +173,7 @@ class CatPhoto(models.Model):
 
 
 class CatRating(models.Model):
+    """Модель подсчета рейтинга котов."""
     cat = models.ForeignKey(
         Cat,
         on_delete=models.CASCADE,
@@ -185,6 +186,7 @@ class CatRating(models.Model):
         verbose_name="Автор оценки"
     )
     rating = models.PositiveIntegerField(
+        verbose_name="Оценка коту/кошки",
         validators=[
             MinValueValidator(1), MaxValueValidator(5)
         ]

@@ -1,5 +1,7 @@
+from django.db.models import Avg
+from requests.models import Response
 from rest_framework import serializers
-from .models import Breed, Cat, Group, CatPhoto
+from .models import Breed, Cat, Group, CatPhoto, CatRating
 
 
 class GroupSerializer(serializers.ModelSerializer):
@@ -34,7 +36,7 @@ class CatPhotoSerializer(serializers.ModelSerializer):
 class CatSerializer(serializers.ModelSerializer):
     """Сериализатор для котов."""
 
-    breed_display = serializers.CharField(source='breed.name', read_only=True)
+    breed_display = serializers.CharField(source="breed.name", read_only=True)
     photos = CatPhotoSerializer(many=True, read_only=True)
     color = serializers.CharField(default="#808080")
     age = serializers.DecimalField(max_digits=4, decimal_places=2, default="99")
@@ -164,3 +166,57 @@ class CatUpdateSerializer(serializers.ModelSerializer):
         instance.breed = validated_data.get("breed", instance.breed)
         instance.save()
         return instance
+
+
+class CatRatingSerializer(serializers.ModelSerializer):
+    """Сериализатор оценок котов."""
+    cat_name = serializers.CharField(source="cat.name", read_only=True)
+
+    class Meta:
+        model = CatRating
+        fields = ("id", "cat", "cat_name", "user", "rating")
+        read_only_fields = ("user", "cat_name")
+
+    def validate_rating(self, value):
+        """Проверка, что рейтинг в допустимых пределах"""
+        if value < 1 or value > 5:
+            raise serializers.ValidationError("Рейтинг должен быть от 1 до 5")
+        return value
+
+    def create(self, validated_data):
+        """Автоматически назначаем текущего пользователя"""
+        validated_data["user"] = self.context["request"].user
+        return super().create(validated_data)
+
+
+class CatAverageSerializer(serializers.ModelSerializer):
+    """Сериализатор для котов с их средней оценкой и количеством оценок."""
+    average_rating = serializers.FloatField(read_only=True)
+    owner_username = serializers.CharField(source="owner.username", read_only=True)
+    breed_name = serializers.CharField(source="breed.name", read_only=True)
+    sex = serializers.CharField(source="get_sex_display")
+    rating_count = serializers.IntegerField()
+
+    class Meta:
+        model = Cat
+        fields = (
+            "name",
+            "breed_name",
+            "owner_username",
+            "sex",
+            "average_rating",
+            "rating_count"
+        )
+
+    def to_representation(self, instance):
+        """Вывод представления на русском языке."""
+        representation = super().to_representation(instance)
+
+        return {
+            "имя": representation["name"],
+            "название породы": representation["breed_name"],
+            "владелец кота/кошки": representation["owner_username"],
+            "пол": representation["sex"],
+            "средняя_оценка": representation["average_rating"],
+            "количество_оценок": representation["rating_count"],
+        }

@@ -1,19 +1,22 @@
 from http import HTTPStatus
 
+from django.db.models import Avg, Count, Prefetch
 from django_filters.rest_framework import DjangoFilterBackend
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema_view
 from rest_framework.decorators import action
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, viewsets, status, generics
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework.response import Response
 
+from core import permissions
 from .filters import FilterBreed
 from core.permissions import IsOwnerOrReadOnlyOrAdmin
-from .models import Breed, Cat, CatPhoto
-from .schemas import CUSTOM_BREEDS_SCHEMA, CUSTOM_CAT_SCHEMA
-from .serializers import BreedSerializer, CatSerializer, CatPhotoSerializer, CatUpdateSerializer
+from .models import Breed, Cat, CatPhoto, CatRating
+from .schemas import CUSTOM_BREEDS_SCHEMA, CUSTOM_CAT_SCHEMA, CUSTOM_CAT_RATING_SCHEMA
+from .serializers import BreedSerializer, CatSerializer, CatPhotoSerializer, CatUpdateSerializer, CatRatingSerializer, \
+    CatAverageSerializer
 
 import logging
 logger = logging.getLogger(__name__)
@@ -34,7 +37,6 @@ class BreedViewSet(viewsets.ReadOnlyModelViewSet):
 class CatViewSet(mixins.CreateModelMixin,
                  mixins.ListModelMixin,
                  mixins.RetrieveModelMixin,
-                 # mixins.UpdateModelMixin,
                  mixins.DestroyModelMixin,
                  viewsets.GenericViewSet):
     """Кастомный основной ViewSet котов."""
@@ -69,7 +71,6 @@ class CatViewSet(mixins.CreateModelMixin,
         Создает нового кота.
         """
         return super().create(request, *args, **kwargs)
-
 
     def partial_update(self, request, *args, **kwargs):
         """
@@ -123,3 +124,71 @@ class CatViewSet(mixins.CreateModelMixin,
         serializer.is_valid(raise_exception=True)
         serializer.save(cat=cat)
         return Response(serializer.data, status=HTTPStatus.CREATED)
+
+@extend_schema_view(**CUSTOM_CAT_RATING_SCHEMA)
+class CatRatingView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.DestroyModelMixin,
+    viewsets.GenericViewSet
+):
+    """ViewSet для управления оценками котов."""
+
+    queryset = CatRating.objects.select_related("cat", "user").all()
+    permission_classes = (IsAuthenticated,)
+
+    def get_serializer_class(self):
+        if self.action == "get_highest_rated_cats":
+            return CatAverageSerializer
+        return CatRatingSerializer
+
+    def get_queryset(self):
+        """
+        Возвращаем все рейтинги, с возможностью фильтрации по коту.
+        """
+        queryset = self.queryset
+        cat_id = self.request.query_params.get("cat", None)
+        if cat_id:
+            queryset = queryset.filter(cat_id=cat_id)
+        return queryset
+
+    def perform_create(self, serializer):
+        """
+        Добавляем текущего пользователя как автора оценки.
+        """
+        serializer.save(user=self.request.user)
+
+    def get(self, request, *args, **kwargs):
+        """
+        Получение списка оценок.
+        """
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """
+        Создание новой оценки для кота/кошки.
+        """
+        return self.create(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        """
+        Удаление оценки у кота/кошки.
+        """
+        return self.destroy(request, *args, **kwargs)
+
+    @action(
+        methods=("GET",),
+        detail=False,
+        url_path="highest-rated",
+        permission_classes=(AllowAny,)
+    )
+    def get_highest_rated_cats(self, request):
+        """Коты, отсортированные по средней оценке(по убыванию)."""
+
+        cats_with_ratings = Cat.objects.annotate(
+            average_rating=Avg("ratings__rating"),
+            rating_count=Count("ratings")
+        ).filter(rating_count__gt=0).order_by("-average_rating")
+
+        serializer = CatAverageSerializer(cats_with_ratings, many=True)
+        return Response(serializer.data)

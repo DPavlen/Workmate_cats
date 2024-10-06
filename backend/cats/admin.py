@@ -67,10 +67,10 @@ class CatAdmin(BaseAdminSettings):
 @admin.register(CatRating)
 class CatRatingAdmin(admin.ModelAdmin):
     """Административный интерфейс для управления породами котов."""
-    list_display = ("cat", "user", "rating")
-    list_filter = ("cat", "rating")
-    search_fields = ("cat__name", "user__username")
-    ordering = ("cat", "user")
+    list_display = ("id", "cat", "user", "rating")
+    list_filter = ("id", "cat", "rating")
+    search_fields = ("id", "cat__name", "user__username")
+    ordering = ("id", "cat", "user")
 
     fieldsets = (
         (None, {

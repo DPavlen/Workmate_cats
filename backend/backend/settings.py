@@ -50,6 +50,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "querycount.middleware.QueryCountMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -175,8 +176,6 @@ DJOSER = {
     "SERIALIZERS": {
         "user_create": "users.serializers.CustomUserSerializer",
         "user": "users.serializers.CustomUserSerializer",
-        # "current_user": "users.serializers.CustomUserSerializer",
-        # "token_destroy": "users.serializers.CustomTokenDestroySerializer",
     },
     "PERMISSIONS": {
         "user": ["djoser.permissions.CurrentUserOrAdminOrReadOnly"],
