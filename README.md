@@ -62,6 +62,12 @@ __Реализоана работа"cats (Работа с породами ко�
 [![Tested with pytest](https://img.shields.io/badge/Tested_with_pytest-8.1.1-6495ED)](https://docs.pytest.org/en/8.1.x/)
 
 Backend API
+![image](https://github.com/user-attachments/assets/30c083b7-6bbd-48a2-a615-f60ec6cbbfdd)
+![image](https://github.com/user-attachments/assets/c05dc8d1-d4fd-4289-8afb-9ec2dfd6a402)
+![image](https://github.com/user-attachments/assets/7880856a-04aa-4c8e-8236-b5e5397a4549)
+![image](https://github.com/user-attachments/assets/1e73643b-786a-4381-b78e-8f29cd68968e)
+![image](https://github.com/user-attachments/assets/f9e1e75b-9cb6-4072-b999-dcd59abc715c)
+
 
 
 ## 4. Запуск проекта через docker compose и ссылка на него <a id=4></a>
