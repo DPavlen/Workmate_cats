@@ -17,14 +17,13 @@ WORKDIR /app
 RUN pip install poetry
 
 COPY pyproject.toml /app/
-#COPY poetry.lock /app/
-# Копируем только файлы зависимостей и устанавливаем их
-#COPY pyproject.toml poetry.lock /app/
 
 RUN poetry config virtualenvs.create true && \
     poetry config virtualenvs.path /app/.venv && \
     poetry install --no-interaction --no-ansi
 
+# Устанавливаем pytest
+RUN poetry add pytest
 #RUN poetry lock && poetry install --only main
 
 COPY . /app/

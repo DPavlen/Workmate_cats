@@ -5,7 +5,6 @@ custom_breeds_tags_schema = {"tags": ["breeds (Работа с породами 
 custom_cat_tags_schema = {"tags": ["cats (Работа с породами котов)"]}
 
 
-
 CUSTOM_BREEDS_SCHEMA = {
     "list": extend_schema(
         **custom_breeds_tags_schema,

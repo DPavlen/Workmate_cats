@@ -1,6 +1,3 @@
-from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import extend_schema, OpenApiResponse, OpenApiExample
-from rest_framework import status
 from drf_spectacular.utils import (extend_schema, OpenApiParameter,
                                    OpenApiResponse)
 

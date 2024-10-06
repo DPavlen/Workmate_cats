@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     "rest_framework",
+    "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "djoser",
 
@@ -36,7 +37,6 @@ INSTALLED_APPS = [
     "drf_spectacular_sidecar",
     "django_filters",
 
-    # "api.apps.ApiConfig",
     "cats.apps.CatsConfig",
     "users.apps.UsersConfig",
     "colorfield"

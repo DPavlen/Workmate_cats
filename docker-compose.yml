@@ -54,19 +54,19 @@ services:
       - workmate_cats
 
 
-#  pytest:
-#    build:
-#      context: ./backend/
-#      dockerfile: Dockerfile
-#    volumes:
-#      - ./backend:/app
-#    env_file:
-#      - .env
-#    environment:
-#      - DJANGO_SETTINGS_MODULE=backend.settings
-#      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
-#    depends_on:
-#      - db
-#    networks:
-#      - workmate_cats
-#    command: poetry run pytest
+  pytest:
+    build:
+      context: ./backend/
+      dockerfile: Dockerfile
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      - DJANGO_SETTINGS_MODULE=backend.settings
+      - DATABASE_URL=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+    depends_on:
+      - db
+    networks:
+      - workmate_cats
+    command: poetry run pytest

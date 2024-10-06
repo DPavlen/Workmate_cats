@@ -6,7 +6,11 @@ echo @@@@@@@@@@@@@@@ preparing migrations and run pytest @@@@@@@@@@@@@@@@@@
 
 poetry run python manage.py makemigrations
 poetry run python manage.py migrate
+
 sleep 5
+poetry run python manage.py add_user
+sleep 5
+
 poetry run python manage.py cat_db
 
 
