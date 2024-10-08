@@ -13,6 +13,9 @@ sleep 5
 
 poetry run python manage.py cat_db
 
+sleep 5
+poetry run pytest
+sleep 2
 
 echo @@@@@@@@@@@@@@@@@@@ collecting backend static @@@@@@@@@@@@@@@@@@@@@@@
 
